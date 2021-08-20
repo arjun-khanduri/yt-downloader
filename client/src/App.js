@@ -5,7 +5,7 @@ import DownloadPanel from './components/DownloadPanel/DownloadPanel';
 function App() {
   return (
     <div className="App">
-      <h1>App</h1>
+      <h1>YouTube Downloader</h1>
       <DownloadPanel />
     </div>
   );
