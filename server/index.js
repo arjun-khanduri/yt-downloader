@@ -19,27 +19,24 @@ app.get('/fetch', async (req, res) => {
     video = ytdl(link);
     let videoTitle = '';
     let videoThumbnail = '';
+    let videoYoutubeChannel = '';
     await ytdl.getInfo(ytdl.getURLVideoID(link)).then(info => {
         videoTitle = info.videoDetails.title;
         videoThumbnail = info.videoDetails.thumbnails[info.videoDetails.thumbnails.length - 1].url;
+        videoYoutubeChannel = info.videoDetails.author.name;
     });
-    res.send({title: videoTitle, thumbnail: videoThumbnail});
+    res.send({title: videoTitle, thumbnail: videoThumbnail, channel: videoYoutubeChannel});
 })
 
 
-app.post('/download', async (req, res) => {
-    const video = ytdl(link);
-    ytdl.getInfo(ytdl.getURLVideoID(link)).then(info => {
-        videoTitle = info.videoDetails.title
-        // console.log('rating:', info.player_response.videoDetails.averageRating);
-        // console.log('uploaded by:', info.videoDetails.author.name);
-    });
-    video.pipe(fs.createWriteStream('videoTitle.mp4'));
-    video.on('progress', async (chunkLength, downloaded, total) => {
+app.get('/download', (req, res) => {
+    video.pipe(fs.createWriteStream('videoplayback.mp4'));
+    video.on('progress', (chunkLength, downloaded, total) => {
         const percent = downloaded / total;
         progress = (percent * 100).toFixed(2)
         console.log(progress);
     });
+    console.log('GET request');
 })
 
 app.listen(PORT, (req, res) => {
