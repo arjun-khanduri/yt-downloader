@@ -23,13 +23,15 @@ const useStyles = makeStyles((theme) => ({
 
 const DownloadPanel = () => {
     const [link, setLink] = useState('')
-    const [progress, setProgress] = useState(0)
+    const [resultView, setResultView] = useState(false)
+    // const [progress, setProgress] = useState(0)
     const [videoInfo, setVideoInfo] = useState([])
     const fetchVideo = () => {
         axios.get(`http://localhost:8000/fetch?link=${link}`)
-        .then(response => {
-            setVideoInfo(response.data)
-        });
+            .then(response => {
+                setVideoInfo(response.data)
+                setResultView(true)
+            });
     }
     const classes = useStyles();
     return (
@@ -51,12 +53,13 @@ const DownloadPanel = () => {
                     Fetch video
                 </Button>
             </div>
-            <div>
-                <Divider variant="middle" className={classes.divider} />
-                <ViewResultPanel />
-                <h1>{videoInfo.title}</h1>
-                <img src={videoInfo.thumbnail} alt="Video Thumbnail"/>
-            </div>
+            {resultView ?
+                <div>
+                    <Divider variant="middle" className={classes.divider} />
+                    <ViewResultPanel videoInfo={videoInfo} link={link}/>
+                </div>
+                : null
+            }
         </>
     )
 }
