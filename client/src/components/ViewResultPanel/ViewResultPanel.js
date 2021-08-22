@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
@@ -20,11 +20,6 @@ const ViewResultPanel = (props) => {
 
     const [format, setFormat] = useState(0)
 
-    useEffect(() => {
-        // props.formats.map((format) => console.log(format.itag));
-        // console.log()
-    })
-
     const downloadVideo = () => {
         axios.get(`http://localhost:8000/download?itag=${format}`)
     }
@@ -38,7 +33,6 @@ const ViewResultPanel = (props) => {
         <>
             <h4>{props.videoInfo.title}</h4>
             <h4>{props.videoInfo.channel}</h4>
-            {/* <img src={props.videoInfo.thumbnail} alt="Video Thumbnail" /> */}
             <TextField
                 select
                 label="Select Format"

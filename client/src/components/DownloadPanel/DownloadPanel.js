@@ -26,23 +26,15 @@ const DownloadPanel = () => {
     const [link, setLink] = useState('')
     const [resultView, setResultView] = useState(false)
     const [loaderView, setLoaderView] = useState(false)
-    // const [progress, setProgress] = useState(0)
     const [videoInfo, setVideoInfo] = useState([])
     const [formats, setFormats] = useState([])
     const fetchVideo = () => {
         setLoaderView(true)
         axios.get(`http://localhost:8000/fetch?link=${link}`)
             .then(response => {
-                for (let i = 0; i < response.data.formatOptions.length; i++) {
-                    if (response.data.formatOptions[i].hasVideo && response.data.formatOptions[i].hasAudio) {
-                        //console.log(response.data.formatOptions[i].qualityLabel)
-                        // setFormats([...response.data.formatOptions[i].qualityLabel])
-                        console.log(response.data.formatOptions[i])
+                for (let i = 0; i < response.data.formatOptions.length; i++)
+                    if (response.data.formatOptions[i].hasVideo && response.data.formatOptions[i].hasAudio)
                         setFormats(prev => [...prev, response.data.formatOptions[i]])
-                        // formats.push(response.data.formatOptions[i])
-                    }
-                }
-                console.log(formats);
                 setVideoInfo(response.data)
                 setResultView(true)
                 setLoaderView(false)

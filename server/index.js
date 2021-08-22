@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const fs = require('fs');
 const cors = require('cors');
 const ytdl = require('ytdl-core');
 
@@ -25,7 +24,6 @@ app.get('/fetch', async (req, res) => {
         videoYoutubeChannel = info.videoDetails.author.name;
         formatOptions = info.formats;
     });
-    // console.log(formatOptions);
     res.send({ title: videoTitle, thumbnail: videoThumbnail, channel: videoYoutubeChannel, formatOptions: formatOptions });
 })
 
