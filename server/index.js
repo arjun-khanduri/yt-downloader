@@ -20,12 +20,15 @@ app.get('/fetch', async (req, res) => {
     let videoTitle = '';
     let videoThumbnail = '';
     let videoYoutubeChannel = '';
+    let formatOptions = [];
     await ytdl.getInfo(ytdl.getURLVideoID(link)).then(info => {
         videoTitle = info.videoDetails.title;
         videoThumbnail = info.videoDetails.thumbnails[info.videoDetails.thumbnails.length - 1].url;
         videoYoutubeChannel = info.videoDetails.author.name;
+        formatOptions = info.formats;
     });
-    res.send({title: videoTitle, thumbnail: videoThumbnail, channel: videoYoutubeChannel});
+    // console.log(formatOptions);
+    res.send({title: videoTitle, thumbnail: videoThumbnail, channel: videoYoutubeChannel, formatOptions: formatOptions});
 })
 
 
