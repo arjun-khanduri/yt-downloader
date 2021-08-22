@@ -52,13 +52,23 @@ const DownloadPanel = () => {
                     onChange={(e) => { setLink(e.target.value) }} />
             </div>
             <div>
-                <Button
-                    variant="contained"
-                    onClick={fetchVideo}
-                    className={classes.button}
-                    color="primary">
-                    Fetch video
-                </Button>
+                {!resultView ?
+                    <Button
+                        variant="contained"
+                        onClick={fetchVideo}
+                        className={classes.button}
+                        color="primary">
+                        Fetch formats
+                    </Button>
+                    :
+                    <Button
+                        variant="contained"
+                        className={classes.button}
+                        color="primary"
+                        disabled>
+                        Fetch formats
+                    </Button>
+                }
             </div>
             {resultView ?
                 <div>
