@@ -7,7 +7,6 @@ const ytdl = require('ytdl-core');
 
 const PORT = process.env.PORT || 8000;
 
-let progress = 0;
 let link = '';
 let formatOptions = [];
 
@@ -33,16 +32,10 @@ app.get('/fetch', async (req, res) => {
 
 app.get('/download', (req, res) => {
     const itag = req.query.itag
-    console.log(itag)
-    let video = ytdl(link, {
+    res.header("Content-Disposition",'attachment;\ filename="video.'+"mp4"+'"');
+    ytdl(link, {
         filter: formatOptions => formatOptions.itag == itag
-    });
-    video.pipe(fs.createWriteStream('video.mp4'));
-    video.on('progress', (chunkLength, downloaded, total) => {
-        const percent = downloaded / total;
-        progress = (percent * 100).toFixed(2)
-        console.log(progress);
-    });
+    }).pipe(res);;
 })
 
 app.listen(PORT, (req, res) => {
