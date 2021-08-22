@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
@@ -18,14 +18,21 @@ const useStyles = makeStyles((theme) => ({
 
 const ViewResultPanel = (props) => {
 
+    const [format, setFormat] = useState()
+
     useEffect(() => {
         // props.formats.map((format) => console.log(format.itag));
         // console.log()
     })
 
     const downloadVideo = () => {
-        axios.get('http://localhost:8000/download')
+        axios.get(`http://localhost:8000/download?itag=${format}`)
     }
+
+    const chooseFormat = (e) => {
+        setFormat(e.target.value)
+    }
+
     const classes = useStyles();
     return (
         <>
@@ -34,12 +41,13 @@ const ViewResultPanel = (props) => {
             {/* <img src={props.videoInfo.thumbnail} alt="Video Thumbnail" /> */}
             <TextField
                 select
-                value="Options"
                 label="Select Format"
+                id="selectFormat"
                 className={classes.formatSelection}
-            >
+                onChange={chooseFormat}>
                 {props.formats.map((option) => (
-                    <MenuItem value={option.itag}>
+                    <MenuItem
+                        value={option.itag}>
                         {option.container.toUpperCase()} - {option.qualityLabel}
                     </MenuItem>
                 ))}
