@@ -4,14 +4,43 @@ import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
     formatSelection: {
-        width: '40%'
+        width: '40%',
+        marginTop: '30px'
     },
     downloadBtn: {
         marginTop: '30px'
-    }
+    },
+    root: {
+        display: 'flex',
+        margin: '0 auto',
+        marginTop: '30px',
+        width: "40%",
+    },
+    cover: {
+        width: 151,
+    },
+    bullet: {
+        display: 'inline-block',
+        margin: '0 2px',
+        transform: 'scale(0.8)',
+    },
+    channel: {
+        fontSize: 14,
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+    pos: {
+        marginBottom: 12,
+    },
 }));
 
 
@@ -31,8 +60,22 @@ const ViewResultPanel = (props) => {
     const classes = useStyles();
     return (
         <>
-            <h4>{props.videoInfo.title}</h4>
-            <h4>{props.videoInfo.channel}</h4>
+            <Card className={classes.root}>
+                <CardContent>
+                    <Typography className={classes.title}>
+                        {props.videoInfo.title}
+                    </Typography>
+                    <Typography className={classes.channel} color="textSecondary" gutterBottom>
+                        {props.videoInfo.channel}
+                    </Typography>
+                </CardContent>
+                <CardActions>
+                    <img
+                        src={props.videoInfo.thumbnail}
+                        alt="Video Thumbnail"
+                        width="250px" />
+                </CardActions>
+            </Card>
             <TextField
                 select
                 label="Select Format"
