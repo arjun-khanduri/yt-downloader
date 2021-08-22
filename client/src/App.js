@@ -1,12 +1,12 @@
 import './App.css';
-import DownloadPanel from './components/DownloadPanel/DownloadPanel';
+import FetchVideoPanel from './components/FetchVideoPanel/FetchVideoPanel';
 
 
 function App() {
   return (
     <div className="App">
       <h1>YouTube Downloader</h1>
-      <DownloadPanel />
+      <FetchVideoPanel />
     </div>
   );
 }

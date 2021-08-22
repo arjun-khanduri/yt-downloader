@@ -1,91 +1,104 @@
 import React, { useState } from 'react';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
-import Divider from '@material-ui/core/Divider';
-import ViewResultPanel from '../ViewResultPanel/ViewResultPanel';
-import Loader from '../Loader/Loader';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
-    button: {
-        marginTop: '30px',
+    formatSelection: {
+        width: '40%',
+        marginTop: '30px'
     },
-    textField: {
-        width: '50%',
+    downloadBtn: {
+        marginTop: '30px'
     },
-    divider: {
+    root: {
+        display: 'flex',
+        margin: '0 auto',
         marginTop: '30px',
-        marginLeft: '20%',
-        marginRight: '20%',
-    }
+        width: "40%",
+    },
+    cover: {
+        width: 151,
+    },
+    bullet: {
+        display: 'inline-block',
+        margin: '0 2px',
+        transform: 'scale(0.8)',
+    },
+    channel: {
+        fontSize: 14,
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+    pos: {
+        marginBottom: 12,
+    },
 }));
 
 
-const DownloadPanel = () => {
-    const [link, setLink] = useState('')
-    const [resultView, setResultView] = useState(false)
-    const [loaderView, setLoaderView] = useState(false)
-    const [videoInfo, setVideoInfo] = useState([])
-    const [formats, setFormats] = useState([])
-    const fetchVideo = () => {
-        setLoaderView(true)
-        axios.get(`http://localhost:8000/fetch?link=${link}`)
-            .then(response => {
-                for (let i = 0; i < response.data.formatOptions.length; i++)
-                    if (response.data.formatOptions[i].hasVideo && response.data.formatOptions[i].hasAudio)
-                        setFormats(prev => [...prev, response.data.formatOptions[i]])
-                setVideoInfo(response.data)
-                setResultView(true)
-                setLoaderView(false)
-            });
+
+const DownloadPanel = (props) => {
+
+    const [format, setFormat] = useState(0)
+
+    const downloadVideo = () => {
+        axios.get(`http://localhost:8000/download?itag=${format}`)
     }
+
+    const chooseFormat = (e) => {
+        setFormat(e.target.value)
+    }
+
     const classes = useStyles();
     return (
         <>
-            <div>
-                <TextField
-                    id="ytLink"
-                    className={classes.textField}
-                    label="YouTube Video Link"
-                    variant="outlined"
-                    onChange={(e) => { setLink(e.target.value) }} />
-            </div>
-            <div>
-                {!resultView ?
-                    <Button
-                        variant="contained"
-                        onClick={fetchVideo}
-                        className={classes.button}
-                        color="primary">
-                        Fetch formats
-                    </Button>
-                    :
-                    <Button
-                        variant="contained"
-                        className={classes.button}
-                        color="primary"
-                        disabled>
-                        Fetch formats
-                    </Button>
-                }
-            </div>
-            {resultView ?
-                <div>
-                    <Divider variant="middle" className={classes.divider} />
-                    <ViewResultPanel videoInfo={videoInfo} formats={formats} />
-                </div>
-                :
-                null
-            }
-            {loaderView ?
-                <div>
-                    <Divider variant="middle" className={classes.divider} />
-                    <Loader />
-                </div>
-                :
-                null
-            }
+            <Card className={classes.root}>
+                <CardContent>
+                    <Typography className={classes.title}>
+                        {props.videoInfo.title}
+                    </Typography>
+                    <Typography className={classes.channel} color="textSecondary" gutterBottom>
+                        {props.videoInfo.channel}
+                    </Typography>
+                </CardContent>
+                <CardActions>
+                    <img
+                        src={props.videoInfo.thumbnail}
+                        alt="Video Thumbnail"
+                        width="250px" />
+                </CardActions>
+            </Card>
+            <TextField
+                select
+                label="Select Format"
+                id="selectFormat"
+                defaultValue=""
+                className={classes.formatSelection}
+                onChange={chooseFormat}>
+                {props.formats.map((format) => (
+                    <MenuItem
+                        key={format.itag}
+                        value={format.itag}>
+                        {format.container.toUpperCase()} - {format.qualityLabel}
+                    </MenuItem>
+                ))}
+            </TextField>
+            <br />
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={downloadVideo}
+                className={classes.downloadBtn}>
+                Download video
+            </Button>
         </>
     )
 }
