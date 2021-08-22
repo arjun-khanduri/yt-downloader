@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import Divider from '@material-ui/core/Divider';
 import ViewResultPanel from '../ViewResultPanel/ViewResultPanel';
+import Loader from '../Loader/Loader';
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -24,17 +25,18 @@ const useStyles = makeStyles((theme) => ({
 const DownloadPanel = () => {
     const [link, setLink] = useState('')
     const [resultView, setResultView] = useState(false)
+    const [loaderView, setLoaderView] = useState(false)
     // const [progress, setProgress] = useState(0)
     const [videoInfo, setVideoInfo] = useState([])
     const [formats, setFormats] = useState([])
     const fetchVideo = () => {
+        setLoaderView(true)
         axios.get(`http://localhost:8000/fetch?link=${link}`)
             .then(response => {
                 for (let i = 0; i < response.data.formatOptions.length; i++) {
                     if (response.data.formatOptions[i].hasVideo && response.data.formatOptions[i].hasAudio) {
                         //console.log(response.data.formatOptions[i].qualityLabel)
                         // setFormats([...response.data.formatOptions[i].qualityLabel])
-                        let temp = (response.data.formatOptions[i].container).toString().toUpperCase() + " " + (response.data.formatOptions[i].qualityLabel).toString()
                         console.log(response.data.formatOptions[i])
                         setFormats(prev => [...prev, response.data.formatOptions[i]])
                         // formats.push(response.data.formatOptions[i])
@@ -43,6 +45,7 @@ const DownloadPanel = () => {
                 console.log(formats);
                 setVideoInfo(response.data)
                 setResultView(true)
+                setLoaderView(false)
             });
     }
     const classes = useStyles();
@@ -70,7 +73,16 @@ const DownloadPanel = () => {
                     <Divider variant="middle" className={classes.divider} />
                     <ViewResultPanel videoInfo={videoInfo} formats={formats} />
                 </div>
-                : null
+                :
+                null
+            }
+            {loaderView ?
+                <div>
+                    <Divider variant="middle" className={classes.divider} />
+                    <Loader />
+                </div>
+                :
+                null
             }
         </>
     )
