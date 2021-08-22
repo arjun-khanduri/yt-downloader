@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ViewResultPanel = (props) => {
 
-    const [format, setFormat] = useState()
+    const [format, setFormat] = useState(0)
 
     useEffect(() => {
         // props.formats.map((format) => console.log(format.itag));
@@ -43,12 +43,14 @@ const ViewResultPanel = (props) => {
                 select
                 label="Select Format"
                 id="selectFormat"
+                defaultValue=""
                 className={classes.formatSelection}
                 onChange={chooseFormat}>
-                {props.formats.map((option) => (
+                {props.formats.map((format) => (
                     <MenuItem
-                        value={option.itag}>
-                        {option.container.toUpperCase()} - {option.qualityLabel}
+                        key={format.itag}
+                        value={format.itag}>
+                        {format.container.toUpperCase()} - {format.qualityLabel}
                     </MenuItem>
                 ))}
             </TextField>
@@ -57,8 +59,7 @@ const ViewResultPanel = (props) => {
                 variant="contained"
                 color="primary"
                 onClick={downloadVideo}
-                className={classes.downloadBtn}
-            >
+                className={classes.downloadBtn}>
                 Download video
             </Button>
         </>
