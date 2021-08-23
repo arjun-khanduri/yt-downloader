@@ -7,6 +7,7 @@ const ytdl = require('ytdl-core');
 const PORT = process.env.PORT || 8000;
 
 let link = '';
+let videoTitle = '';
 let formatOptions = [];
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -15,7 +16,6 @@ app.use(cors());
 
 app.get('/fetch', async (req, res) => {
     link = req.query.link;
-    let videoTitle = '';
     let videoThumbnail = '';
     let videoYoutubeChannel = '';
     await ytdl.getInfo(ytdl.getURLVideoID(link)).then(info => {
@@ -30,7 +30,7 @@ app.get('/fetch', async (req, res) => {
 
 app.get('/download', (req, res) => {
     const itag = req.query.itag
-    res.header("Content-Disposition",'attachment;\ filename="video.'+"mp4"+'"');
+    res.header("Content-Disposition",`attachment;\ filename="${videoTitle}.`+"mp4"+'"');
     ytdl(link, {
         filter: formatOptions => formatOptions.itag == itag
     }).pipe(res);;
