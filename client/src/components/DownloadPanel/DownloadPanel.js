@@ -70,10 +70,12 @@ const DownloadPanel = (props) => {
                     </Typography>
                 </CardContent>
                 <CardActions>
+                    <a href={props.link} target="_blank" rel="noreferrer">
                     <img
                         src={props.videoInfo.thumbnail}
                         alt="Video Thumbnail"
                         width="250px" />
+                    </a>
                 </CardActions>
             </Card>
             <TextField

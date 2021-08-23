@@ -73,7 +73,7 @@ const FetchVideoPanel = () => {
             {resultView ?
                 <div>
                     <Divider variant="middle" className={classes.divider} />
-                    <DownloadPanel videoInfo={videoInfo} formats={formats} />
+                    <DownloadPanel videoInfo={videoInfo} formats={formats} link={link} />
                 </div>
                 :
                 null
