@@ -8,6 +8,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
 
 const useStyles = makeStyles((theme) => ({
     formatSelection: {
@@ -41,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
     pos: {
         marginBottom: 12,
     },
+    refresh: {
+        marginTop: '30px'
+    }
 }));
 
 
@@ -48,8 +52,10 @@ const useStyles = makeStyles((theme) => ({
 const DownloadPanel = (props) => {
 
     const [format, setFormat] = useState(0)
+    const [downloadClicked, setDownloadClicked] = useState(false)
 
     const downloadVideo = () => {
+        setDownloadClicked(true)
         axios.get(`http://localhost:8000/download?itag=${format}`)
     }
 
@@ -71,10 +77,10 @@ const DownloadPanel = (props) => {
                 </CardContent>
                 <CardActions>
                     <a href={props.link} target="_blank" rel="noreferrer">
-                    <img
-                        src={props.videoInfo.thumbnail}
-                        alt="Video Thumbnail"
-                        width="250px" />
+                        <img
+                            src={props.videoInfo.thumbnail}
+                            alt="Video Thumbnail"
+                            width="250px" />
                     </a>
                 </CardActions>
             </Card>
@@ -101,6 +107,16 @@ const DownloadPanel = (props) => {
                 className={classes.downloadBtn}>
                 Download video
             </Button>
+            <br />
+            {downloadClicked ?
+                <Typography className={classes.refresh}>
+                    <Link href= "/" variant="body2">
+                        Download another video
+                    </Link>
+                </Typography>
+                :
+                null
+            }
         </>
     )
 }
