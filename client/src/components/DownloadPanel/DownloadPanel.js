@@ -24,23 +24,12 @@ const useStyles = makeStyles((theme) => ({
         marginTop: '30px',
         width: "40%",
     },
-    cover: {
-        width: 151,
-    },
-    bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)',
-    },
     channel: {
         fontSize: 14,
     },
     title: {
         fontSize: 20,
         fontWeight: 'bold',
-    },
-    pos: {
-        marginBottom: 12,
     },
     refresh: {
         marginTop: '30px'
