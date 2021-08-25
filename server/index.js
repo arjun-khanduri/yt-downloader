@@ -30,10 +30,10 @@ app.get('/fetch', async (req, res) => {
 
 app.get('/download', (req, res) => {
     const itag = req.query.itag
-    res.header("Content-Disposition",`attachment;\ filename="${videoTitle}.`+"mp4"+'"');
+    res.header("Content-Disposition",`attachment; filename="${videoTitle}.`+"mp4"+'"');
     ytdl(link, {
         filter: formatOptions => formatOptions.itag == itag
-    }).pipe(res);;
+    }).pipe(res);
 })
 
 app.listen(PORT, (req, res) => {
