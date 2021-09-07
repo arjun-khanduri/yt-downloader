@@ -3,6 +3,9 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const ytdl = require('ytdl-core');
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+const ffmpeg = require('fluent-ffmpeg');
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 const PORT = process.env.PORT || 8000;
 
@@ -27,10 +30,18 @@ app.get('/fetch', async (req, res) => {
     res.send({ title: videoTitle, thumbnail: videoThumbnail, channel: videoYoutubeChannel, formatOptions: formatOptions });
 })
 
+app.get('/audio/download', (req, res) => {
+    let id = ytdl.getURLVideoID(link)
+    let stream = ytdl(id, {
+        quality: 'highestaudio'
+    })
+    ffmpeg(stream).audioBitrate(128).save(`${id}.mp3`)
+})
+
 
 app.get('/download', (req, res) => {
     const itag = req.query.itag
-    res.header("Content-Disposition",`attachment; filename="${videoTitle}.`+"mp4"+'"');
+    res.header("Content-Disposition", `attachment; filename="${videoTitle}.` + "mp4" + '"');
     ytdl(link, {
         filter: formatOptions => formatOptions.itag == itag
     }).pipe(res);
