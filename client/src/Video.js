@@ -1,7 +1,7 @@
 import './App.css';
 import FetchVideoPanel from './components/FetchVideoPanel/FetchVideoPanel';
 
-function App() {
+function Video() {
   return (
     <div className="App">
       <h1>YouTube Video Downloader</h1>
@@ -10,4 +10,4 @@ function App() {
   );
 }
 
-export default App;
+export default Video;
