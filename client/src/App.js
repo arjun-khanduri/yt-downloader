@@ -23,7 +23,7 @@ function App() {
     <div className="App">
       <h1>YT Downloader</h1>
       <div className={classes.choicePanel}>
-        <Link to="/video">
+        <Link to="/video" style={{ textDecoration: 'none' }}>
           <Button
             variant="contained"
             className={classes.button}
@@ -32,7 +32,7 @@ function App() {
           </Button>
         </Link>
         <br />
-        <Link to="/audio">
+        <Link to="/audio" style={{ textDecoration: 'none' }}>
           <Button
             variant="contained"
             className={classes.button}
