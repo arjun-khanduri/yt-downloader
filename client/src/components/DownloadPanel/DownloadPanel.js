@@ -100,7 +100,7 @@ const DownloadPanel = (props) => {
             {downloadClicked ?
                 <Typography className={classes.refresh}>
                     <Link href= "/" variant="body2">
-                        Download another video
+                        Download from another link
                     </Link>
                 </Typography>
                 :
